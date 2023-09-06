@@ -10,6 +10,10 @@ class QListWidget;
 class QComboBox;
 class QCheckBox;
 class QLineEdit;
+#if CHIAKI_GUI_ENABLE_SPEEX
+class QSlider;
+class QLabel;
+#endif
 
 class SettingsDialog : public QDialog
 {
@@ -28,8 +32,16 @@ class SettingsDialog : public QDialog
 		QComboBox *codec_combo_box;
 		QLineEdit *audio_buffer_size_edit;
 		QComboBox *audio_device_combo_box;
+		QComboBox *microphone_combo_box;
 		QCheckBox *pi_decoder_check_box;
 		QComboBox *hw_decoder_combo_box;
+#if CHIAKI_GUI_ENABLE_SPEEX
+		QCheckBox *speech_processing_check_box;
+		QSlider *noiseSuppress;
+		QSlider *echoSuppress;
+		QLabel *echoValue;
+		QLabel *noiseValue;
+#endif
 
 		QListWidget *registered_hosts_list_widget;
 		QPushButton *delete_registered_host_button;
@@ -39,6 +51,9 @@ class SettingsDialog : public QDialog
 	private slots:
 		void LogVerboseChanged();
 		void DualSenseChanged();
+#if CHIAKI_GUI_ENABLE_SPEEX
+		void SpeechProcessingChanged();
+#endif
 		void DisconnectActionSelected();
 
 		void ResolutionSelected();
@@ -47,6 +62,7 @@ class SettingsDialog : public QDialog
 		void CodecSelected();
 		void AudioBufferSizeEdited();
 		void AudioOutputSelected();
+		void AudioInputSelected();
 		void HardwareDecodeEngineSelected();
 		void UpdateHardwareDecodeEngineComboBox();
 

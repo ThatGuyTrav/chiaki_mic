@@ -51,6 +51,7 @@ void StreamWindow::Init()
 	const QKeySequence fullscreen_shortcut = Qt::Key_F11;
 	const QKeySequence stretch_shortcut = Qt::CTRL + Qt::Key_S;
 	const QKeySequence zoom_shortcut = Qt::CTRL + Qt::Key_Z;
+	const QKeySequence mute_shortcut = Qt::CTRL + Qt::Key_M;
 
 	fullscreen_action = new QAction(tr("Fullscreen"), this);
 	fullscreen_action->setCheckable(true);
@@ -72,6 +73,7 @@ void StreamWindow::Init()
 			menu.addSeparator();
 			menu.addAction(stretch_action);
 			menu.addAction(zoom_action);
+			menu.addAction(mute_action);
 			releaseKeyboard();
 			connect(&menu, &QMenu::aboutToHide, this, [this] {
 				grabKeyboard();
@@ -101,6 +103,12 @@ void StreamWindow::Init()
 	zoom_action->setShortcut(zoom_shortcut);
 	addAction(zoom_action);
 	connect(zoom_action, &QAction::triggered, this, &StreamWindow::ToggleZoom);
+
+	mute_action = new QAction(tr("Toggle Mute"), this);
+	mute_action->setCheckable(false);
+	mute_action->setShortcut(mute_shortcut);
+	addAction(mute_action);
+	connect(mute_action, &QAction::triggered, this, &StreamWindow::ToggleMute);
 
 	auto quit_action = new QAction(tr("Quit"), this);
 	quit_action->setShortcut(Qt::CTRL + Qt::Key_Q);
@@ -273,6 +281,13 @@ void StreamWindow::ToggleZoom()
 			? TransformMode::Fit
 			: TransformMode::Zoom);
 	UpdateTransformModeActions();
+}
+
+void StreamWindow::ToggleMute()
+{
+	if(!session)
+		return;
+	session->ToggleMute();
 }
 
 void StreamWindow::resizeEvent(QResizeEvent *event)
