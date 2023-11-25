@@ -6,10 +6,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.toLiveData
 import com.metallic.chiaki.common.AppDatabase
 import com.metallic.chiaki.common.ManualHost
 import com.metallic.chiaki.common.RegisteredHost
-import com.metallic.chiaki.common.ext.toLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

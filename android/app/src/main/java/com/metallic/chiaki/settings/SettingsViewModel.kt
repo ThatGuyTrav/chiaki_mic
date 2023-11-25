@@ -3,6 +3,7 @@
 package com.metallic.chiaki.settings
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.toLiveData
 import com.metallic.chiaki.common.AppDatabase
 import com.metallic.chiaki.common.Preferences
 import com.metallic.chiaki.common.ext.toLiveData

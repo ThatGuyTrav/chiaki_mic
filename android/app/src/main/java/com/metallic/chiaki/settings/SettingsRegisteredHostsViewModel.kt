@@ -3,9 +3,9 @@
 package com.metallic.chiaki.settings
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.toLiveData
 import com.metallic.chiaki.common.AppDatabase
 import com.metallic.chiaki.common.RegisteredHost
-import com.metallic.chiaki.common.ext.toLiveData
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
