@@ -57,7 +57,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_fec_decode(uint8_t *frame_buf, size_t unit_
 	}
 
 	int res = jerasure_matrix_decode(k, m, CHIAKI_FEC_WORDSIZE, matrix, 0, jerasures,
-									 (char **)data_ptrs, (char **)coding_ptrs, unit_size);
+									 (char **)data_ptrs, (char **)coding_ptrs, (int) unit_size);
 
 	if(res < 0)
 		err = CHIAKI_ERR_FEC_FAILED;

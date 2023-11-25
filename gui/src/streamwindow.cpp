@@ -49,9 +49,9 @@ void StreamWindow::Init()
 	connect(session, &StreamSession::LoginPINRequested, this, &StreamWindow::LoginPINRequested);
 
 	const QKeySequence fullscreen_shortcut = Qt::Key_F11;
-	const QKeySequence stretch_shortcut = Qt::CTRL + Qt::Key_S;
-	const QKeySequence zoom_shortcut = Qt::CTRL + Qt::Key_Z;
-	const QKeySequence mute_shortcut = Qt::CTRL + Qt::Key_M;
+	const QKeySequence stretch_shortcut = Qt::CTRL | Qt::Key_S;
+	const QKeySequence zoom_shortcut = Qt::CTRL | Qt::Key_Z;
+	const QKeySequence mute_shortcut = Qt::CTRL | Qt::Key_M;
 
 	fullscreen_action = new QAction(tr("Fullscreen"), this);
 	fullscreen_action->setCheckable(true);
@@ -111,7 +111,7 @@ void StreamWindow::Init()
 	connect(mute_action, &QAction::triggered, this, &StreamWindow::ToggleMute);
 
 	auto quit_action = new QAction(tr("Quit"), this);
-	quit_action->setShortcut(Qt::CTRL + Qt::Key_Q);
+	quit_action->setShortcut(Qt::CTRL | Qt::Key_Q);
 	addAction(quit_action);
 	connect(quit_action, &QAction::triggered, this, &StreamWindow::Quit);
 

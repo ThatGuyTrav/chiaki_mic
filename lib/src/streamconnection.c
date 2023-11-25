@@ -794,7 +794,7 @@ static ChiakiErrorCode stream_connection_send_big(ChiakiStreamConnection *stream
 	ChiakiLaunchSpec launch_spec;
 	launch_spec.target = session->target;
 	launch_spec.mtu = session->mtu_in;
-	launch_spec.rtt = session->rtt_us / 1000;
+	launch_spec.rtt = (unsigned int) (session->rtt_us / 1000);
 	launch_spec.handshake_key = session->handshake_key;
 
 	launch_spec.width = session->connect_info.video_profile.width;

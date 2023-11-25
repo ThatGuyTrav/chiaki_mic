@@ -82,7 +82,7 @@ void DiscoveryManager::SetActive(bool active)
 void DiscoveryManager::SendWakeup(const QString &host, const QByteArray &regist_key, bool ps5)
 {
 	QByteArray key = regist_key;
-	for(size_t i=0; i<key.size(); i++)
+	for(qsizetype i=0; i<key.size(); i++)
 	{
 		if(!key.at(i))
 		{

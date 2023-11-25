@@ -204,7 +204,7 @@ bool AVOpenGLFrame::Update(AVFrame *frame, ChiakiLog *log)
 	width = frame->width;
 	height = frame->height;
 
-	for(int i=0; i<conversion_config->planes; i++)
+	for(size_t i=0; i<conversion_config->planes; i++)
 	{
 		int width = frame->width / conversion_config->plane_configs[i].width_divider;
 		int height = frame->height / conversion_config->plane_configs[i].height_divider;
@@ -299,13 +299,13 @@ void AVOpenGLWidget::initializeGL()
 		return;
 	}
 
-	for(int i=0; i<2; i++)
+	for(size_t i=0; i<2; i++)
 	{
 		frames[i].conversion_config = conversion_config;
 		f->glGenTextures(conversion_config->planes, frames[i].tex);
 		f->glGenBuffers(conversion_config->planes, frames[i].pbo);
 		uint8_t uv_default[] = {0x7f, 0x7f};
-		for(int j=0; j<conversion_config->planes; j++)
+		for(size_t j=0; j<conversion_config->planes; j++)
 		{
 			f->glBindTexture(GL_TEXTURE_2D, frames[i].tex[j]);
 			f->glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

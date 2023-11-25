@@ -168,7 +168,7 @@ static void feedback_sender_send_history(ChiakiFeedbackSender *feedback_sender)
 	uint64_t buttons_now = state_now->buttons;
 	for(uint8_t i=0; i<CHIAKI_CONTROLLER_BUTTONS_COUNT; i++)
 	{
-		uint64_t button_id = 1 << i;
+		uint64_t button_id = 1ULL << i;
 		bool prev = buttons_prev & button_id;
 		bool now = buttons_now & button_id;
 		if(prev != now)

@@ -272,7 +272,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_takion_connect(ChiakiTakion *takion, Chiaki
 #endif
 	}
 
-	r = connect(takion->sock, info->sa, info->sa_len);
+	r = connect(takion->sock, info->sa, (int) info->sa_len);
 	if(r < 0)
 	{
 		CHIAKI_LOGE(takion->log, "Takion failed to connect: %s", strerror(errno));
@@ -339,7 +339,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_takion_crypt_advance_key_pos(ChiakiTakion *
 
 CHIAKI_EXPORT ChiakiErrorCode chiaki_takion_send_raw(ChiakiTakion *takion, const uint8_t *buf, size_t buf_size)
 {
-	int r = send(takion->sock, buf, buf_size, 0);
+	int r = send(takion->sock, buf, (int) buf_size, 0);
 	if(r < 0)
 		return CHIAKI_ERR_NETWORK;
 	return CHIAKI_ERR_SUCCESS;
@@ -818,7 +818,7 @@ static ChiakiErrorCode takion_recv(ChiakiTakion *takion, uint8_t *buf, size_t *b
 		return err;
 	}
 
-	int received_sz = recv(takion->sock, buf, *buf_size, 0);
+	int received_sz = recv(takion->sock, buf, (int) *buf_size, 0);
 	if(received_sz <= 0)
 	{
 		if(received_sz < 0)
@@ -1085,7 +1085,7 @@ static void takion_write_message_header(uint8_t *buf, uint32_t tag, uint64_t key
 {
 	*((chiaki_unaligned_uint32_t *)(buf + 0)) = htonl(tag);
 	memset(buf + 4, 0, CHIAKI_GKCRYPT_GMAC_SIZE);
-	*((chiaki_unaligned_uint32_t *)(buf + 8)) = htonl(key_pos);
+	*((chiaki_unaligned_uint32_t *)(buf + 8)) = htonl((uint32_t) key_pos);
 	*(buf + 0xc) = chunk_type;
 	*(buf + 0xd) = chunk_flags;
 	*((chiaki_unaligned_uint16_t *)(buf + 0xe)) = htons((uint16_t)(payload_data_size + 4));

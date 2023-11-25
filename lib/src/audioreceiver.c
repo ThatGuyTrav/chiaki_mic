@@ -89,7 +89,7 @@ CHIAKI_EXPORT void chiaki_audio_receiver_av_packet(ChiakiAudioReceiver *audio_re
 	{
 		ChiakiSeqNum16 frame_index;
 		if(i < source_units_count)
-			frame_index = packet->frame_index + i;
+			frame_index = packet->frame_index + (ChiakiSeqNum16) i;
 		else
 		{
 			// fec
@@ -99,7 +99,7 @@ CHIAKI_EXPORT void chiaki_audio_receiver_av_packet(ChiakiAudioReceiver *audio_re
 			if(audio_receiver->frame_index_startup && packet->frame_index + fec_index < fec_units_count + 1)
 				continue;
 
-			frame_index = packet->frame_index - fec_units_count + fec_index;
+			frame_index = packet->frame_index - fec_units_count + (ChiakiSeqNum16) fec_index;
 		}
 
 		chiaki_audio_receiver_frame(audio_receiver, frame_index, packet->is_haptics, packet->data + unit_size * i, unit_size);

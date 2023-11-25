@@ -27,17 +27,17 @@ static uint32_t compress_quat(float *q)
 		if(fabs(q[i]) > fabs(q[largest_i]))
 			largest_i = i;
 	}
-	uint32_t r = (q[largest_i] < 0.0 ? 1 : 0) | (largest_i << 1);
+	uint32_t r = (uint32_t) ((q[largest_i] < 0.0 ? 1 : 0) | (largest_i << 1));
 	for(size_t i = 0; i < 3; i++)
 	{
 		size_t qi = i < largest_i ? i : i + 1;
 		float v = q[qi];
 		if(v < -M_SQRT1_2)
-			v = -M_SQRT1_2;
+			v = (float) -M_SQRT1_2;
 		if(v > M_SQRT1_2)
-			v = M_SQRT1_2;
-		v += M_SQRT1_2;
-		v *= (float)0x1ff / (2.0f * M_SQRT1_2);
+			v = (float) M_SQRT1_2;
+		v += (float) M_SQRT1_2;
+		v *= 0x1ff / (float) (2.0 * M_SQRT1_2);
 		r |= (uint32_t)v << (3 + i * 9);
 	}
 	return r;
@@ -47,22 +47,22 @@ CHIAKI_EXPORT void chiaki_feedback_state_format_v9(uint8_t *buf, ChiakiFeedbackS
 {
 	buf[0x0] = 0xa0;
 	uint16_t v = (uint16_t)(0xffff * ((float)state->gyro_x - GYRO_MIN) / (GYRO_MAX - GYRO_MIN));
-	buf[0x1] = v;
+	buf[0x1] = v & 0xff;
 	buf[0x2] = v >> 8;
 	v = (uint16_t)(0xffff * ((float)state->gyro_y - GYRO_MIN) / (GYRO_MAX - GYRO_MIN));
-	buf[0x3] = v;
+	buf[0x3] = v & 0xff;
 	buf[0x4] = v >> 8;
 	v = (uint16_t)(0xffff * ((float)state->gyro_z - GYRO_MIN) / (GYRO_MAX - GYRO_MIN));
-	buf[0x5] = v;
+	buf[0x5] = v & 0xff;
 	buf[0x6] = v >> 8;
 	v = (uint16_t)(0xffff * ((float)state->accel_x - ACCEL_MIN) / (ACCEL_MAX - ACCEL_MIN));
-	buf[0x7] = v;
+	buf[0x7] = v & 0xff;
 	buf[0x8] = v >> 8;
 	v = (uint16_t)(0xffff * ((float)state->accel_y - ACCEL_MIN) / (ACCEL_MAX - ACCEL_MIN));
-	buf[0x9] = v;
+	buf[0x9] = v & 0xff;
 	buf[0xa] = v >> 8;
 	v = (uint16_t)(0xffff * ((float)state->accel_z - ACCEL_MIN) / (ACCEL_MAX - ACCEL_MIN));
-	buf[0xb] = v;
+	buf[0xb] = v & 0xff;
 	buf[0xc] = v >> 8;
 	float q[4] = { state->orient_x, state->orient_y, state->orient_z, state->orient_w };
 	uint32_t qc = compress_quat(q);

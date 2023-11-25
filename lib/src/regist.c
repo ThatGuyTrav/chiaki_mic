@@ -297,7 +297,7 @@ static void *regist_thread_func(void *user)
 		goto fail_socket;
 	}
 
-	s = send(sock, payload, payload_size, 0);
+	s = send(sock, payload, (int) payload_size, 0);
 	if(s < 0)
 	{
 #ifdef _WIN32
@@ -370,7 +370,7 @@ static ChiakiErrorCode regist_search(ChiakiRegist *regist, struct addrinfo *addr
 	if(regist->info.broadcast)
 		r = sendto_broadcast(regist->log, sock, src, strlen(src) + 1, 0, &send_addr, send_addr_len);
 	else
-		r = send(sock, src, strlen(src) + 1, 0);
+		r = send(sock, src, (int) strlen(src) + 1, 0);
 	if(r < 0)
 	{
 		CHIAKI_LOGE(regist->log, "Regist failed to send search: %s", strerror(errno));
@@ -436,7 +436,7 @@ static chiaki_socket_t regist_search_connect(ChiakiRegist *regist, struct addrin
 		if(ai->ai_addrlen > *send_addr_len)
 			continue;
 		memcpy(send_addr, ai->ai_addr, ai->ai_addrlen);
-		*send_addr_len = ai->ai_addrlen;
+		*send_addr_len = (socklen_t) ai->ai_addrlen;
 
 		set_port(send_addr, htons(REGIST_PORT));
 
@@ -503,7 +503,7 @@ static chiaki_socket_t regist_request_connect(ChiakiRegist *regist, const struct
 		return CHIAKI_INVALID_SOCKET;
 	}
 
-	int r = connect(sock, addr, addr_len);
+	int r = connect(sock, addr, (int) addr_len);
 	if(r < 0)
 	{
 		int errsv = errno;
@@ -595,7 +595,7 @@ static ChiakiErrorCode regist_recv_response(ChiakiRegist *regist, ChiakiRegister
 			return err;
 		}
 
-		int received = recv(sock, buf + buf_filled_size, (content_size + header_size) - buf_filled_size, 0);
+		int received = recv(sock, buf + buf_filled_size, (int) ((content_size + header_size) - buf_filled_size), 0);
 		if(received <= 0)
 		{
 			CHIAKI_LOGE(regist->log, "Regist failed to receive response content");

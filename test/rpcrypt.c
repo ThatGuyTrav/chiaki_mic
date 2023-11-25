@@ -122,7 +122,6 @@ static MunitResult test_bright_regist_ps4(const MunitParameter params[], void *u
 	size_t key_0_off = 0x1e;
 
 	ChiakiRPCrypt rpcrypt;
-	ChiakiErrorCode err;
 
 	chiaki_rpcrypt_init_regist(&rpcrypt, CHIAKI_TARGET_PS4_10, ambassador, key_0_off, 78703893);
 	munit_assert_memory_equal(CHIAKI_RPCRYPT_KEY_SIZE, rpcrypt.bright, bright_expected);
@@ -137,7 +136,6 @@ static MunitResult test_bright_regist_ps5(const MunitParameter params[], void *u
 	size_t key_0_off = 0x1e;
 
 	ChiakiRPCrypt rpcrypt;
-	ChiakiErrorCode err;
 
 	chiaki_rpcrypt_init_regist(&rpcrypt, CHIAKI_TARGET_PS5_1, ambassador, key_0_off, 78703893);
 	munit_assert_memory_equal(CHIAKI_RPCRYPT_KEY_SIZE, rpcrypt.bright, bright_expected);

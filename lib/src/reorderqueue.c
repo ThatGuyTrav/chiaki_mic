@@ -9,8 +9,8 @@
 #define ge(a, b) ((a) == (b) || gt((a), (b)))
 #define le(a, b) ((a) == (b) || lt((a), (b)))
 #define add(a, b) (queue->seq_num_add((a), (b)))
-#define QUEUE_SIZE (1 << queue->size_exp)
-#define IDX_MASK ((1 << queue->size_exp) - 1)
+#define QUEUE_SIZE (1ULL << queue->size_exp)
+#define IDX_MASK ((1ULL << queue->size_exp) - 1)
 #define idx(seq_num) ((seq_num) & IDX_MASK)
 
 CHIAKI_EXPORT ChiakiErrorCode chiaki_reorder_queue_init(ChiakiReorderQueue *queue, size_t size_exp,
@@ -25,7 +25,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_reorder_queue_init(ChiakiReorderQueue *queu
 	queue->drop_strategy = CHIAKI_REORDER_QUEUE_DROP_STRATEGY_END;
 	queue->drop_cb = NULL;
 	queue->drop_cb_user = NULL;
-	queue->queue = calloc(1 << size_exp, sizeof(ChiakiReorderQueueEntry));
+	queue->queue = calloc(1ULL << size_exp, sizeof(ChiakiReorderQueueEntry));
 	if(!queue->queue)
 		return CHIAKI_ERR_MEMORY;
 	return CHIAKI_ERR_SUCCESS;

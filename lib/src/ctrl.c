@@ -229,7 +229,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_ctrl_goto_bed(ChiakiCtrl *ctrl)
 
 CHIAKI_EXPORT ChiakiErrorCode chiaki_ctrl_keyboard_set_text(ChiakiCtrl *ctrl, const char *text)
 {
-	const uint32_t length = strlen(text);
+	const size_t length = strlen(text);
 	const size_t payload_size = sizeof(CtrlKeyboardTextRequestMessage) + length;
 
 	uint8_t *payload = malloc(payload_size);
@@ -240,8 +240,8 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_ctrl_keyboard_set_text(ChiakiCtrl *ctrl, co
 
 	CtrlKeyboardTextRequestMessage *msg = (CtrlKeyboardTextRequestMessage *)payload;
 	msg->counter = ntohl(++ctrl->keyboard_text_counter);
-	msg->text_length1 = ntohl(length);
-	msg->text_length2 = ntohl(length);
+	msg->text_length1 = ntohl((uint32_t) length);
+	msg->text_length2 = ntohl((uint32_t) length);
 
 	ChiakiErrorCode err;
 	err = chiaki_ctrl_send_message(ctrl, CTRL_MESSAGE_TYPE_KEYBOARD_TEXT_CHANGE_REQ, payload, payload_size);
@@ -370,7 +370,7 @@ static void *ctrl_thread_func(void *user)
 			break;
 		}
 
-		int received = recv(ctrl->sock, ctrl->recv_buf + ctrl->recv_buf_size, sizeof(ctrl->recv_buf) - ctrl->recv_buf_size, 0);
+		int received = recv(ctrl->sock, ctrl->recv_buf + ctrl->recv_buf_size, (int) (sizeof(ctrl->recv_buf) - ctrl->recv_buf_size), 0);
 		if(received <= 0)
 		{
 			if(received < 0)
@@ -432,7 +432,7 @@ static ChiakiErrorCode ctrl_message_send(ChiakiCtrl *ctrl, uint16_t type, const 
 
 	if(enc)
 	{
-		sent = send(ctrl->sock, enc, payload_size, 0);
+		sent = send(ctrl->sock, enc, (int) payload_size, 0);
 		free(enc);
 		if(sent < 0)
 		{
@@ -948,7 +948,7 @@ static ChiakiErrorCode ctrl_connect(ChiakiCtrl *ctrl)
 		if(err != CHIAKI_ERR_CANCELED)
 		{
 #ifdef _WIN32
-			int errsv = WSAGetLastError;
+			int errsv = WSAGetLastError();
 #else
 			int errsv = errno;
 #endif

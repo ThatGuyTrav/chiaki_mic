@@ -3,10 +3,10 @@
 #include <chiaki/orientation.h>
 #include <math.h>
 
-#define SIN_1_4_PI      0.7071067811865475
-#define SIN_NEG_1_4_PI -0.7071067811865475
-#define COS_1_4_PI      0.7071067811865476
-#define COS_NEG_1_4_PI  0.7071067811865476
+#define SIN_1_4_PI      0.7071067811865475f
+#define SIN_NEG_1_4_PI -0.7071067811865475f
+#define COS_1_4_PI      0.7071067811865476f
+#define COS_NEG_1_4_PI  0.7071067811865476f
 
 #define WARMUP_SAMPLES_COUNT 30
 #define BETA_WARMUP 20.0f
@@ -109,7 +109,7 @@ CHIAKI_EXPORT void chiaki_orientation_update(ChiakiOrientation *orient,
 static float inv_sqrt(float x)
 {
 #if 1
-	return 1.0f / sqrt(x);
+	return 1.0f / (float) sqrt(x);
 #else
 	// Fast inverse square-root
 	// See: http://en.wikipedia.org/wiki/Fast_inverse_square_root

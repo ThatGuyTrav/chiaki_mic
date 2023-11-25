@@ -1497,7 +1497,7 @@ static ChiakiErrorCode bright_ambassador(ChiakiTarget target, uint8_t *bright, u
 	const uint8_t *keys_b = chiaki_target_is_ps5(target) ? keys_b_ps5 : keys_b_ps4;
 
 	const uint8_t *key = &keys_a[(nonce[0] >> 3) * 0x70];
-	for(size_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
+	for(uint8_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
 	{
 		uint8_t v = nonce[i];
 		if(chiaki_target_is_ps5(target))
@@ -1517,7 +1517,7 @@ static ChiakiErrorCode bright_ambassador(ChiakiTarget target, uint8_t *bright, u
 	key = &keys_b[(nonce[7] >> 3) * 0x70];
 	if(chiaki_target_is_ps5(target))
 	{
-		for(size_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
+		for(uint8_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
 		{
 			uint8_t v = morning[i];
 			v += 0x18;
@@ -1529,7 +1529,7 @@ static ChiakiErrorCode bright_ambassador(ChiakiTarget target, uint8_t *bright, u
 	}
 	else
 	{
-		for(size_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
+		for(uint8_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
 		{
 			uint8_t v = (key[i] ^ morning[i]);
 			v += 0x21;
@@ -1559,7 +1559,7 @@ CHIAKI_EXPORT void chiaki_rpcrypt_bright_ambassador(ChiakiTarget target, uint8_t
 
 CHIAKI_EXPORT void chiaki_rpcrypt_aeropause_ps4_pre10(uint8_t *aeropause, const uint8_t *ambassador)
 {
-	for(size_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
+	for(uint8_t i=0; i<CHIAKI_RPCRYPT_KEY_SIZE; i++)
 	{
 		uint8_t v = ambassador[i];
 		v -= i;

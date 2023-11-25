@@ -819,7 +819,7 @@ void StreamSession::PushHapticsFrame(uint8_t *buf, size_t buf_size)
 	SDL_AudioCVT cvt;
 	// Haptics samples are coming in at 3KHZ, but the DualSense expects 48KHZ
 	SDL_BuildAudioCVT(&cvt, AUDIO_S16LSB, 4, 3000, AUDIO_S16LSB, 4, 48000);
-	cvt.len = buf_size * 2;
+	cvt.len = (int) (buf_size * 2);
 	cvt.buf = haptics_resampler_buf;
 	// Remix to 4 channels
 	for (int i=0; i < buf_size; i+=4)

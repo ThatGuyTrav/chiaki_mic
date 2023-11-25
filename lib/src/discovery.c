@@ -235,7 +235,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_discovery_send(ChiakiDiscovery *discovery, 
 
 	CHIAKI_LOGV(discovery->log, "Discovery sending:");
 	chiaki_log_hexdump(discovery->log, CHIAKI_LOG_VERBOSE, (const uint8_t *)buf, (size_t)len + 1);
-	int rc = sendto_broadcast(discovery->log, discovery->socket, buf, (size_t)len + 1, 0, addr, addr_size);
+	int rc = sendto_broadcast(discovery->log, discovery->socket, buf, (size_t)len + 1, 0, addr, (socklen_t) addr_size);
 	if(rc < 0)
 	{
 		CHIAKI_LOGE(discovery->log, "Discovery failed to send: %s", strerror(errno));
@@ -356,7 +356,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_discovery_wakeup(ChiakiLog *log, ChiakiDisc
 		if(ai->ai_addrlen > sizeof(addr))
 			continue;
 		memcpy(&addr, ai->ai_addr, ai->ai_addrlen);
-		addr_len = ai->ai_addrlen;
+		addr_len = (socklen_t) ai->ai_addrlen;
 		break;
 	}
 	freeaddrinfo(addrinfos);

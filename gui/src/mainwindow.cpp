@@ -10,6 +10,7 @@
 #include <streamwindow.h>
 #include <manualhostdialog.h>
 
+#include <qtypes.h>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -146,7 +147,7 @@ MainWindow::MainWindow(Settings *settings, QWidget *parent)
 	connect(settings_action, &QAction::triggered, this, &MainWindow::ShowSettings);
 
 	auto quit_action = new QAction(tr("Quit"), this);
-	quit_action->setShortcut(Qt::CTRL + Qt::Key_Q);
+	quit_action->setShortcut(Qt::CTRL | Qt::Key_Q);
 	addAction(quit_action);
 	connect(quit_action, &QAction::triggered, this, &MainWindow::Quit);
 
@@ -372,6 +373,6 @@ void MainWindow::UpdateServerWidgets()
 		grid_widget->AddWidget(widget);
 	}
 
-	for(size_t i=0; i<server_item_widgets.count(); i++)
+	for(qsizetype i=0; i<server_item_widgets.count(); i++)
 		server_item_widgets[i]->Update(display_servers[i]);
 }

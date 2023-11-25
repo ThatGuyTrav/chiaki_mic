@@ -125,7 +125,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_http_response_parse(ChiakiHttpResponse *res
 	return chiaki_http_header_parse(&response->headers, buf, buf_size);
 }
 
-CHIAKI_EXPORT ChiakiErrorCode chiaki_recv_http_header(int sock, char *buf, size_t buf_size, size_t *header_size, size_t *received_size, ChiakiStopPipe *stop_pipe, uint64_t timeout_ms)
+CHIAKI_EXPORT ChiakiErrorCode chiaki_recv_http_header(chiaki_socket_t sock, char *buf, size_t buf_size, size_t *header_size, size_t *received_size, ChiakiStopPipe *stop_pipe, uint64_t timeout_ms)
 {
 	// 0 = ""
 	// 1 = "\r"
