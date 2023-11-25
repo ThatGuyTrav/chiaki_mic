@@ -110,13 +110,24 @@ CHIAKI_EXPORT bool chiaki_ffmpeg_decoder_video_sample_cb(uint8_t *buf, size_t bu
 	ChiakiFfmpegDecoder *decoder = user;
 
 	chiaki_mutex_lock(&decoder->mutex);
-	AVPacket packet;
-	av_init_packet(&packet);
-	packet.data = buf;
-	packet.size = buf_size;
+
+	AVPacket* packet = av_packet_alloc();
+
+	if (!packet) {
+			CHIAKI_LOGE(decoder->log, "Failed to alloc AVPacket");
+			goto hell;
+	}
+
+	if (av_new_packet(packet, (int) buf_size)) {
+CHIAKI_LOGE(decoder->log, "Failed to create av packet");
+goto hell;
+	}
+
+	memcpy(packet->data, buf, buf_size);
+
 	int r;
 send_packet:
-	r = avcodec_send_packet(decoder->codec_context, &packet);
+	r = avcodec_send_packet(decoder->codec_context, packet);
 	if(r != 0)
 	{
 		if(r == AVERROR(EAGAIN))
@@ -145,11 +156,19 @@ send_packet:
 			goto hell;
 		}
 	}
+
+	if (packet) {
+			av_packet_free(&packet);
+	}
+
 	chiaki_mutex_unlock(&decoder->mutex);
 
 	decoder->frame_available_cb(decoder, decoder->frame_available_cb_user);
 	return true;
 hell:
+	if (packet) {
+			av_packet_free(&packet);
+	}
 	chiaki_mutex_unlock(&decoder->mutex);
 	return false;
 }
