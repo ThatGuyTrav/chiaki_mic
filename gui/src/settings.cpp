@@ -125,6 +125,16 @@ void Settings::SetFPS(ChiakiVideoFPSPreset fps)
 	settings.setValue("settings/fps", fps_values[fps]);
 }
 
+bool Settings::GetVsyncEnabled() const
+{
+		return settings.value("settings/vsync", true).toBool();
+}
+
+void Settings::SetVsyncEnabled(bool vsync_enabled)
+{
+		settings.setValue("settings/vsync", vsync_enabled);
+}
+
 unsigned int Settings::GetBitrate() const
 {
 	return settings.value("settings/bitrate", 0).toUInt();

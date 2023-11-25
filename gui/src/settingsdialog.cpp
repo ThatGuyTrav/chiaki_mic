@@ -324,6 +324,21 @@ SettingsDialog::SettingsDialog(Settings *settings, QWidget *parent) : QDialog(pa
 	decode_settings_layout->addRow(tr("Hardware decode method:"), hw_decoder_combo_box);
 	UpdateHardwareDecodeEngineComboBox();
 
+	vsync_combo_box = new QComboBox(this);
+	static const QList<QPair<bool, QString>> vsync_strings = {
+			{ true, "On" },
+			{ false, "Off" }
+	};
+	auto current_vsync = settings->GetVsyncEnabled();
+	for(const auto &p : vsync_strings)
+	{
+			vsync_combo_box->addItem(p.second, p.first);
+			if(current_vsync == p.first)
+					vsync_combo_box->setCurrentIndex(vsync_combo_box->count() - 1);
+	}
+	connect(vsync_combo_box, SIGNAL(currentIndexChanged(int)), this, SLOT(VsyncSelected()));
+	decode_settings_layout->addRow(tr("Vsync (restart required):"), vsync_combo_box);
+
 	// Registered Consoles
 
 	auto registered_hosts_group_box = new QGroupBox(tr("Registered Consoles"));
@@ -436,6 +451,11 @@ void SettingsDialog::BitrateEdited()
 void SettingsDialog::CodecSelected()
 {
 	settings->SetCodec((ChiakiCodec)codec_combo_box->currentData().toInt());
+}
+
+void SettingsDialog::VsyncSelected()
+{
+		settings->SetVsyncEnabled(vsync_combo_box->currentData().toBool());
 }
 
 void SettingsDialog::AudioBufferSizeEdited()

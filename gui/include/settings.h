@@ -69,6 +69,9 @@ class Settings : public QObject
 		ChiakiVideoResolutionPreset GetResolution() const;
 		void SetResolution(ChiakiVideoResolutionPreset resolution);
 
+		bool GetVsyncEnabled() const;
+		void SetVsyncEnabled(bool vsync_enabled);
+		
 		/**
 		 * @return 0 if set to "automatic"
 		 */

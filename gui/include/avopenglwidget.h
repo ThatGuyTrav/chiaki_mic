@@ -74,9 +74,9 @@ class AVOpenGLWidget: public QOpenGLWidget
 		ConversionConfig *conversion_config;
 
 	public:
-		static QSurfaceFormat CreateSurfaceFormat();
+		static QSurfaceFormat CreateSurfaceFormat(bool vsync_enabled);
 
-		explicit AVOpenGLWidget(StreamSession *session, QWidget *parent = nullptr, TransformMode transform_mode = TransformMode::Fit);
+		explicit AVOpenGLWidget(StreamSession *session, QWidget *parent = nullptr, TransformMode transform_mode = TransformMode::Fit, bool vsync_enabled = true);
 		~AVOpenGLWidget() override;
 
 		void SwapFrames();

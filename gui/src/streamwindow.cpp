@@ -61,7 +61,7 @@ void StreamWindow::Init()
 
 	if(session->GetFfmpegDecoder())
 	{
-		av_widget = new AVOpenGLWidget(session, this, connect_info.transform_mode);
+		av_widget = new AVOpenGLWidget(session, this, connect_info.transform_mode, connect_info.settings->GetVsyncEnabled());
 		setCentralWidget(av_widget);
 
 		av_widget->setContextMenuPolicy(Qt::CustomContextMenu);

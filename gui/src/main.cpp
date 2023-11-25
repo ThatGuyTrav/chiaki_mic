@@ -66,8 +66,10 @@ int real_main(int argc, char *argv[])
 		return 1;
 	}
 
+	Settings settings;
+
 	QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-	QSurfaceFormat::setDefaultFormat(AVOpenGLWidget::CreateSurfaceFormat());
+	QSurfaceFormat::setDefaultFormat(AVOpenGLWidget::CreateSurfaceFormat(settings.GetVsyncEnabled()));
 
 	QApplication app(argc, argv);
 
@@ -76,8 +78,6 @@ int real_main(int argc, char *argv[])
 #else
 	QApplication::setWindowIcon(QIcon(":/icons/chiaki.svg"));
 #endif
-
-	Settings settings;
 
 	QCommandLineParser parser;
 	parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);

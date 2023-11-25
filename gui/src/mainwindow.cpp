@@ -84,7 +84,7 @@ MainWindow::MainWindow(Settings *settings, QWidget *parent)
 	main_widget->setLayout(layout);
 	setCentralWidget(main_widget);
 
-	auto LoadIcon = [this](const QString &filename) {
+	auto LoadIcon = [](const QString &filename) {
 		return QIcon(new IconEngine(filename));
 	};
 

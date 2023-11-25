@@ -110,20 +110,22 @@ static const float vert_pos[] = {
 	1.0f, 1.0f
 };
 
-QSurfaceFormat AVOpenGLWidget::CreateSurfaceFormat()
+QSurfaceFormat AVOpenGLWidget::CreateSurfaceFormat(bool vsync_enabled)
 {
 	QSurfaceFormat format;
 	format.setDepthBufferSize(0);
 	format.setStencilBufferSize(0);
 	format.setVersion(3, 2);
 	format.setProfile(QSurfaceFormat::CoreProfile);
+	format.setSwapInterval(vsync_enabled ? 1 : 0);
+
 #ifdef DEBUG_OPENGL
 	format.setOption(QSurfaceFormat::DebugContext, true);
 #endif
 	return format;
 }
 
-AVOpenGLWidget::AVOpenGLWidget(StreamSession *session, QWidget *parent, TransformMode transform_mode)
+AVOpenGLWidget::AVOpenGLWidget(StreamSession *session, QWidget *parent, TransformMode transform_mode, bool vsync_enabled)
 	: QOpenGLWidget(parent),
 	session(session), transform_mode(transform_mode)
 {
@@ -141,7 +143,8 @@ AVOpenGLWidget::AVOpenGLWidget(StreamSession *session, QWidget *parent, Transfor
 	if(!conversion_config)
 		throw Exception("No matching video conversion config can be found");
 
-	setFormat(CreateSurfaceFormat());
+	setFormat(CreateSurfaceFormat(vsync_enabled));
+	CHIAKI_LOGI(session->GetChiakiLog(), "Creating surface with Vsync %s", vsync_enabled ? "ON" : "OFF");
 
 	frame_uploader_context = nullptr;
 	frame_uploader = nullptr;
