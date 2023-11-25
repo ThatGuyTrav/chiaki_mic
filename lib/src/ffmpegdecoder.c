@@ -119,8 +119,8 @@ CHIAKI_EXPORT bool chiaki_ffmpeg_decoder_video_sample_cb(uint8_t *buf, size_t bu
 	}
 
 	if (av_new_packet(packet, (int) buf_size)) {
-CHIAKI_LOGE(decoder->log, "Failed to create av packet");
-goto hell;
+	CHIAKI_LOGE(decoder->log, "Failed to create av packet");
+	goto hell;
 	}
 
 	memcpy(packet->data, buf, buf_size);
