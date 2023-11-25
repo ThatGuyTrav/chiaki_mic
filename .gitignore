@@ -29,5 +29,6 @@ compile_commands.json
 chiaki.conf
 /appimage
 .cache/
+.vscode/
 /*.app
 /*.dmg
