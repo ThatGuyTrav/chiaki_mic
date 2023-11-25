@@ -33,8 +33,8 @@
 #include <speex/speex_preprocess.h>
 #endif
 
-class QAudioOutput;
-class QAudioInput;
+class QAudioSink;
+class QAudioSource;
 class QIODevice;
 class QKeyEvent;
 class Settings;
@@ -122,11 +122,11 @@ class StreamSession : public QObject
 		ChiakiPiDecoder *pi_decoder;
 #endif
 
-		QAudioDeviceInfo audio_out_device_info;
-		QAudioDeviceInfo audio_in_device_info;
+		QAudioDevice audio_out_device_info;
+		QAudioDevice audio_in_device_info;
 		unsigned int audio_buffer_size;
-		QAudioOutput *audio_output;
-		QAudioInput *audio_input;
+		QAudioSink *audio_output;
+		QAudioSource *audio_input;
 		QIODevice *audio_io;
 		QIODevice *audio_mic;
 #if CHIAKI_GUI_ENABLE_SPEEX

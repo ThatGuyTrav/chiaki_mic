@@ -8,8 +8,9 @@
 #include <chiaki/streamconnection.h>
 
 #include <QKeyEvent>
-#include <QAudioOutput>
-#include <QAudioInput>
+#include <QAudioSink>
+#include <QAudioSource>
+#include <QMediaDevices>
 
 #include <cstring>
 #include <chiaki/session.h>
@@ -123,12 +124,12 @@ StreamSession::StreamSession(const StreamSessionConnectInfo &connect_info, QObje
 	}
 #endif
 
-	audio_out_device_info = QAudioDeviceInfo::defaultOutputDevice();
+	audio_out_device_info = QMediaDevices::defaultAudioOutput();
 	if(!connect_info.audio_out_device.isEmpty())
 	{
-		for(QAudioDeviceInfo di : QAudioDeviceInfo::availableDevices(QAudio::AudioOutput))
+		for(QAudioDevice di : QMediaDevices::audioOutputs())
 		{
-			if(di.deviceName() == connect_info.audio_out_device)
+			if(di.description() == connect_info.audio_out_device)
 			{
 				audio_out_device_info = di;
 				break;
@@ -136,12 +137,12 @@ StreamSession::StreamSession(const StreamSessionConnectInfo &connect_info, QObje
 		}
 	}
 
-	audio_in_device_info = QAudioDeviceInfo::defaultInputDevice();
+	audio_in_device_info = QMediaDevices::defaultAudioInput();
 	if(!connect_info.audio_in_device.isEmpty())
 	{
-		for(QAudioDeviceInfo di : QAudioDeviceInfo::availableDevices(QAudio::AudioInput))
+		for(QAudioDevice di : QMediaDevices::audioInputs())
 		{
-			if(di.deviceName() == connect_info.audio_in_device)
+			if(di.description() == connect_info.audio_in_device)
 			{
 				audio_in_device_info = di;
 				break;
@@ -516,25 +517,23 @@ void StreamSession::InitAudio(unsigned int channels, unsigned int rate)
 	QAudioFormat audio_format;
 	audio_format.setSampleRate(rate);
 	audio_format.setChannelCount(channels);
-	audio_format.setSampleSize(16);
-	audio_format.setCodec("audio/pcm");
-	audio_format.setSampleType(QAudioFormat::SignedInt);
+	audio_format.setSampleFormat(QAudioFormat::Int16);
 
-	QAudioDeviceInfo audio_device_info = audio_out_device_info;
+	QAudioDevice audio_device_info = audio_out_device_info;
 	if(!audio_device_info.isFormatSupported(audio_format))
 	{
 		CHIAKI_LOGE(log.GetChiakiLog(), "Audio Format with %u channels @ %u Hz not supported by Audio Device %s",
 					channels, rate,
-					audio_device_info.deviceName().toLocal8Bit().constData());
+					audio_device_info.description().toLocal8Bit().constData());
 		return;
 	}
 
-	audio_output = new QAudioOutput(audio_device_info, audio_format, this);
+	audio_output = new QAudioSink(audio_device_info, audio_format, this);
 	audio_output->setBufferSize(audio_buffer_size);
 	audio_io = audio_output->start();
 
 	CHIAKI_LOGI(log.GetChiakiLog(), "Audio Device %s opened with %u channels @ %u Hz, buffer size %u",
-				audio_device_info.deviceName().toLocal8Bit().constData(),
+				audio_device_info.description().toLocal8Bit().constData(),
 				channels, rate, audio_output->bufferSize());
 	allow_unmute = true;
 }
@@ -583,24 +582,22 @@ void StreamSession::InitMic(unsigned int channels, unsigned int rate)
 	QAudioFormat audio_format;
 	audio_format.setSampleRate(rate);
 	audio_format.setChannelCount(channels);
-	audio_format.setSampleSize(16);
-	audio_format.setCodec("audio/pcm");
-	audio_format.setSampleType(QAudioFormat::SignedInt);
+	audio_format.setSampleFormat(QAudioFormat::Int16);
 
-	QAudioDeviceInfo audio_device_info = audio_in_device_info;
+	QAudioDevice audio_device_info = audio_in_device_info;
 	if(!audio_device_info.isFormatSupported(audio_format))
 	{
 		CHIAKI_LOGE(log.GetChiakiLog(), "Audio Format with %u channels @ %u Hz not supported by microphone %s",
 					channels, rate,
-					audio_device_info.deviceName().toLocal8Bit().constData());
+					audio_device_info.description().toLocal8Bit().constData());
 		return;
 	}
-	audio_input = new QAudioInput(audio_device_info, audio_format, this);
+	audio_input = new QAudioSource(audio_device_info, audio_format, this);
 	audio_input->setBufferSize(audio_buffer_size);
 	audio_mic = audio_input->start();
 
 	CHIAKI_LOGI(log.GetChiakiLog(), "Microphone %s opened with %u channels @ %u Hz, buffer size %u",
-			audio_device_info.deviceName().toLocal8Bit().constData(),
+			audio_device_info.description().toLocal8Bit().constData(),
 			channels, rate, audio_input->bufferSize());
 	connect(audio_mic, SIGNAL(readyRead()), this, SLOT(ReadMic()));
 }
