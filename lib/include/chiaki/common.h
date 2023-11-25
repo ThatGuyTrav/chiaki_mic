@@ -103,6 +103,10 @@ static inline bool chiaki_codec_is_hdr(ChiakiCodec codec)
 
 CHIAKI_EXPORT const char *chiaki_codec_name(ChiakiCodec codec);
 
+#ifdef _WIN32
+#define strdup _strdup
+#endif
+
 #ifdef __cplusplus
 }
 #endif
