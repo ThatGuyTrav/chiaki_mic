@@ -59,15 +59,6 @@ static ChiakiErrorCode stream_connection_send_streaminfo_ack(ChiakiStreamConnect
 static void stream_connection_takion_av(ChiakiStreamConnection *stream_connection, ChiakiTakionAVPacket *packet);
 static ChiakiErrorCode stream_connection_send_heartbeat(ChiakiStreamConnection *stream_connection);
 
-static void _stream_connection_sleep(int ms)
-{
-#ifdef _WIN32
-		Sleep(ms);
-#else
-		usleep(ms * 1000);
-#endif
-}
-
 CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_init(ChiakiStreamConnection *stream_connection, ChiakiSession *session)
 {
 	stream_connection->session = session;
@@ -641,7 +632,7 @@ static void stream_connection_takion_data_expect_bang(ChiakiStreamConnection *st
 	// debug build with no optimizations with no other configuration or variables changed,
 	// it implies that simply waiting for a small amount of time before sending the
 	// controller connection packets will work around the issue.
-	_stream_connection_sleep(100);
+	chiaki_sleep(100);
 	
 	err = stream_connection_send_controller_connection(stream_connection);
 	if(err != CHIAKI_ERR_SUCCESS)

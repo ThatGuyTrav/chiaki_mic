@@ -59,6 +59,8 @@ CHIAKI_EXPORT const char *chiaki_error_string(ChiakiErrorCode code);
 CHIAKI_EXPORT void *chiaki_aligned_alloc(size_t alignment, size_t size);
 CHIAKI_EXPORT void chiaki_aligned_free(void *ptr);
 
+CHIAKI_EXPORT void chiaki_sleep(int ms);
+
 typedef enum
 {
 	// values must not change

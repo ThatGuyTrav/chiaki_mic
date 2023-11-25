@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 #ifdef _WIN32
 #include <winsock2.h>
 #endif
@@ -80,6 +84,15 @@ CHIAKI_EXPORT void chiaki_aligned_free(void *ptr)
 	_aligned_free(ptr);
 #else
 	free(ptr);
+#endif
+}
+
+CHIAKI_EXPORT void chiaki_sleep(int ms)
+{
+#ifdef _WIN32
+		Sleep(ms);
+#else
+		usleep(ms * 1000);
 #endif
 }
 
