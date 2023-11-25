@@ -54,6 +54,7 @@ add_executable(chiaki WIN32
 		include/manualhostdialog.h
 		src/manualhostdialog.cpp
 		res/resources.qrc
+		res/chiaki.rc
 		include/controllermanager.h
 		src/controllermanager.cpp
 		include/loginpindialog.h
