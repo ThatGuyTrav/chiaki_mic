@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.2)
 
 project(chiaki)
 
+set(QT_MULTIMEDIA_PREFERRED_PLUGINS windowsmediafoundation) #force Qt to use WASAPI
+
 # Like option(), but the value can also be AUTO
 macro(tri_option name desc default)
     set("${name}" "${default}" CACHE STRING "${desc}")
